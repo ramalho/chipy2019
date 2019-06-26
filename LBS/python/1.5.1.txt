@@ -1,0 +1,27 @@
+Given:
+
+  Thread A
+ ┌───────────
+1│ x = 5
+2│ print(x)
+
+
+  Thread B
+ ┌───────────
+1│ x = 7
+
+
+Puzzles:
+
+a) What path yields output 5 and final value 5?
+
+R: b1 < a1 < a2
+
+b) What path yields output 7 and final value 7?
+
+R: a1 < b1 < a2
+
+c) Is there a path that yields output 7 and final value 5? Can you
+prove it?
+
+R: No. To output 7 we need b1 immediately before a2. That implies a1 < b1 < a2, because a1 will always happen before a2. But that sets the final value of x to 7.
