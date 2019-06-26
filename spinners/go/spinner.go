@@ -7,18 +7,18 @@ import (
 )
 
 func spin(msg string, computation <-chan bool, spinning chan<- bool) {
-	spinner_chars := []rune(`⠇⠋⠙⠸⠴⠦`)
+	spinnerChars := []rune(`⠇⠋⠙⠸⠴⠦`)
 	i := 0
 	status := ""
 	repeat := true
 	for repeat {
 		select {
-		case <- computation:
+		case <-computation:
 			repeat = false
 		default:
 			time.Sleep(100 * time.Millisecond)
-			char := spinner_chars[i]
-			i = (i + 1) % len(spinner_chars)
+			char := spinnerChars[i]
+			i = (i + 1) % len(spinnerChars)
 			status = fmt.Sprintf("\r%c %s", char, msg)
 			fmt.Print(status)
 		}
@@ -27,8 +27,8 @@ func spin(msg string, computation <-chan bool, spinning chan<- bool) {
 	spinning <- false
 }
 
-func slow_function() int {
-    time.Sleep(3 * time.Second)
+func slowFunction() int {
+	time.Sleep(3 * time.Second)
 	return 42
 }
 
@@ -36,9 +36,9 @@ func supervisor() int {
 	computation := make(chan bool)
 	spinning := make(chan bool)
 	go spin("thinking!", computation, spinning)
-	result := slow_function()
+	result := slowFunction()
 	computation <- true
-	<- spinning
+	<-spinning
 	return result
 }
 

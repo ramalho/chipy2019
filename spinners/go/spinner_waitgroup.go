@@ -4,34 +4,34 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 	"sync"
+	"time"
 )
 
 func spin(msg string, computation <-chan bool, spinning *sync.WaitGroup) {
 	defer spinning.Done()
-	spinner_chars := []rune(`⠇⠋⠙⠸⠴⠦`)
+	spinnerChars := []rune(`⠇⠋⠙⠸⠴⠦`)
 	i := 0
 	status := ""
 	repeat := true
 	for repeat {
 		select {
-		case <- computation:
+		case <-computation:
 			repeat = false
 		default:
 			time.Sleep(100 * time.Millisecond)
-			char := spinner_chars[i]
-			i = (i + 1) % len(spinner_chars)
+			char := spinnerChars[i]
+			i = (i + 1) % len(spinnerChars)
 			status = fmt.Sprintf("\r%c %s", char, msg)
 			os.Stdout.Write([]byte(status))
 		}
 	}
 	status = fmt.Sprintf("\r%s\r", strings.Repeat(" ", len(status)))
-    os.Stdout.Write([]byte(status))
+	os.Stdout.Write([]byte(status))
 }
 
-func slow_function() int {
-    time.Sleep(3 * time.Second)
+func slowFunction() int {
+	time.Sleep(3 * time.Second)
 	return 42
 }
 
@@ -40,7 +40,7 @@ func supervisor() int {
 	spinning := sync.WaitGroup{}
 	spinning.Add(1)
 	go spin("thinking!", computation, &spinning)
-	result := slow_function()
+	result := slowFunction()
 	computation <- true
 	spinning.Wait()
 	return result
