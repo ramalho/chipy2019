@@ -13,10 +13,10 @@ def prime_test(n):
 
 
 def main(workers):
-    print(f'Workers: {workers} processes')
+    print(f'Workers: {workers} threads')
 
     t0 = time.perf_counter()
-    with futures.ProcessPoolExecutor(max_workers=workers) as executor:
+    with futures.ThreadPoolExecutor(max_workers=workers) as executor:
         future_map = {executor.submit(prime_test, n): n
                       for n in NUMBERS}
         for future in futures.as_completed(future_map):
@@ -25,7 +25,7 @@ def main(workers):
             msg = 'is' if res else 'is not'
             print(f'({dt:0.3f}s) {n:18d} {msg} prime')
     dt = time.perf_counter() - t0
-    print(f'Workers: {workers} processes\nTotal time: {dt:0.3f}s')
+    print(f'Workers: {workers} threads\nTotal time: {dt:0.3f}s')
 
 
 if __name__ == '__main__':

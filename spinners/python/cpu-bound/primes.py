@@ -1,9 +1,10 @@
 import math
 
 def is_prime(n):
+    if n < 2:
+        return (n, False)
     if n == 2:
         return (n, True)
-
     if n % 2 == 0:
         return (n, False)
 
