@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# spinner_thread.py
+# spin_thread.py
 
 # credits: Adapted from Michele Simionato's
 # multiprocessing example in the python-list:
